@@ -1,38 +1,39 @@
-FROM ollama/ollama:0.7.0
+FROM node:20-alpine
 
-# Qwen2.5:1.5b - Docker
+# Install Redis, curl, unzip, bash, and libc6-compat
+RUN apk add --no-cache \
+    curl \
+    unzip \
+    redis \
+    bash \
+    libc6-compat
+
+# Install Ollama from official GitHub release
+RUN curl -L https://github.com/ollama/ollama/releases/download/v0.1.34/ollama-linux-amd64 \
+    -o /usr/local/bin/ollama && \
+    chmod +x /usr/local/bin/ollama
+
+# Environment variables
 ENV API_BASE_URL=http://127.0.0.1:11434/api
 ENV MODEL_NAME_AT_ENDPOINT=qwen2.5:1.5b
 
-# Qwen2.5:32b = Docker
-# ENV API_BASE_URL=http://127.0.0.1:11434/api
-# ENV MODEL_NAME_AT_ENDPOINT=qwen2.5:32b
-
-# Install system dependencies and Node.js
-RUN apt-get update && apt-get install -y \
-  curl \
-  && curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
-  && apt-get install -y nodejs \
-  && rm -rf /var/lib/apt/lists/* \
-  && npm install -g pnpm
-
-# Create app directory
+# Set working directory
 WORKDIR /app
 
-# Copy package files
-COPY .env.docker package.json pnpm-lock.yaml ./
+# Install pnpm
+RUN npm install -g pnpm
 
-# Install dependencies
+# Copy dependencies and install
+COPY package.json pnpm-lock.yaml ./
 RUN pnpm install
 
-# Copy the rest of the application
+# Copy app source
 COPY . .
 
-# Build the project
-RUN pnpm run build
+# Make start script executable
+COPY start-all.sh /start-all.sh
+RUN chmod +x /start-all.sh
 
-# Override the default entrypoint
+# Start script
 ENTRYPOINT ["/bin/sh", "-c"]
-
-# Start Ollama service and pull the model, then run the app
-CMD ["ollama serve & sleep 5 && ollama pull ${MODEL_NAME_AT_ENDPOINT} && node .mastra/output/index.mjs"]
+CMD ["/start-all.sh"]
