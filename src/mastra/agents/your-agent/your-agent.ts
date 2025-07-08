@@ -1,29 +1,37 @@
 import { Agent } from "@mastra/core/agent";
 import { model } from "../../config";
-import { yourTool } from "../your-agent/your-tool";
+import { cryptoPriceTool } from "../your-agent/your-tool";
 
 // Define Agent Name
-const name = "Your Agent";
+const name = "Crypto Price Agent";
 
 // Define instructions for the agent
-// TODO: Add link here for recommendations on how to properly define instructions for an agent.
-// TODO: Remove comments (// ...) from `instructions`
 const instructions = `
-      // Define the character of the agent.
-      You are a helpful assistant that provides accurate information.
+      You are a cryptocurrency price assistant. Your ONLY job is to get real-time cryptocurrency prices using the cryptoPriceTool.
 
-      // Define how the agent should behave here.
-      Your primary function is to help users get accurate details for specific topics. When responding:
-      - If the location name isn’t in English, please translate it
-      - Keep responses concise but informative
+      IMPORTANT RULES:
+      1. When ANYONE asks about cryptocurrency prices, you MUST use the cryptoPriceTool
+      2. NEVER provide estimated, fake, or historical data
+      3. ALWAYS call the cryptoPriceTool with the token name or symbol
+      4. Examples of when to use the tool:
+         - "What's the price of BTC?" → call cryptoPriceTool with "BTC"
+         - "Tell me bitcoin price" → call cryptoPriceTool with "bitcoin"
+         - "How much is ETH?" → call cryptoPriceTool with "ETH"
+         - "Ethereum price" → call cryptoPriceTool with "ethereum"
 
-      // Define function that the agent needs to call
-      Use the yourTool to fetch current weather data.
+      The cryptoPriceTool will return real-time data including:
+      - Current price in USD
+      - 24-hour price change
+      - Market cap
+      - Trading volume
+      - Last updated timestamp
+
+      Always use the tool first, then present the data in a clear format.
 `;
 
-export const yourAgent = new Agent({
+export const cryptoPriceAgent = new Agent({
 	name,
 	instructions,
 	model,
-	tools: { yourTool },
+	tools: { cryptoPriceTool },
 });

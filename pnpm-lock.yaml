@@ -21,8 +21,14 @@ importers:
         specifier: ^0.10.2
         version: 0.10.2(@mastra/core@0.10.5(openapi-types@12.1.3)(react@19.1.0)(zod@3.25.67))
       '@mastra/memory':
-        specifier: ^0.10.3
-        version: 0.10.3(@mastra/core@0.10.5(openapi-types@12.1.3)(react@19.1.0)(zod@3.25.67))(react@19.1.0)
+        specifier: ^0.11.1
+        version: 0.11.1(@mastra/core@0.10.5(openapi-types@12.1.3)(react@19.1.0)(zod@3.25.67))(react@19.1.0)
+      '@openrouter/ai-sdk-provider':
+        specifier: ^0.7.2
+        version: 0.7.2(ai@4.3.16(react@19.1.0)(zod@3.25.67))(zod@3.25.67)
+      axios:
+        specifier: ^1.10.0
+        version: 1.10.0
       dotenv:
         specifier: ^16.5.0
         version: 16.5.0
@@ -753,10 +759,10 @@ packages:
       '@mastra/core': ^0.10.2-alpha.0
       zod: ^3.0.0
 
-  '@mastra/memory@0.10.3':
-    resolution: {integrity: sha512-GEAF5mgajff2HPqvjkX8ZFZ98axU5zXhH2NuX2R8odjv21m6viuEAGIAZxQNqK5kspeqCefYdLfrCoq7arOMzA==}
+  '@mastra/memory@0.11.1':
+    resolution: {integrity: sha512-6ZMjJ5SmjKXnb4Ov3a+p/kqWr1390KiX0eWixhnWU89GmohIDfDrTG2EeKYkjEwR4WUmebhAQ7EubnyKjfyoxg==}
     peerDependencies:
-      '@mastra/core': '>=0.10.4-0 <0.11.0'
+      '@mastra/core': '>=0.10.9-0 <0.11.0-0'
 
   '@mastra/schema-compat@0.10.2':
     resolution: {integrity: sha512-QCPnD0Jd7NJgfVdvNkLPJhqSjyNcA+eaa16N+3kwa+wTBMb6eziWZC1aQNQ6o4T1JVPoo5unVVtL1pqiIgV+tA==}
@@ -902,6 +908,13 @@ packages:
 
   '@nosana/sdk@0.4.5':
     resolution: {integrity: sha512-8Q2qck0JGSfpOvSBMvNgyBWFrgUz3kO+Wv+Y6I5+/uX7O9NtMXmKg4wBe/y7RM1fFvUd5JIxFVh93ISBKvPmbQ==}
+
+  '@openrouter/ai-sdk-provider@0.7.2':
+    resolution: {integrity: sha512-Fry2mV7uGGJRmP9JntTZRc8ElESIk7AJNTacLbF6Syoeb5k8d7HPGkcK9rTXDlqBb8HgU1hOKtz23HojesTmnw==}
+    engines: {node: '>=18'}
+    peerDependencies:
+      ai: ^4.3.16
+      zod: ^3.25.34
 
   '@opentelemetry/api-logs@0.201.1':
     resolution: {integrity: sha512-IxcFDP1IGMDemVFG2by/AMK+/o6EuBQ8idUq3xZ6MxgQGeumYZuX5OwR0h9HuvcUc/JPjQGfU5OHKIKYDJcXeA==}
@@ -5646,7 +5659,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@mastra/memory@0.10.3(@mastra/core@0.10.5(openapi-types@12.1.3)(react@19.1.0)(zod@3.25.67))(react@19.1.0)':
+  '@mastra/memory@0.11.1(@mastra/core@0.10.5(openapi-types@12.1.3)(react@19.1.0)(zod@3.25.67))(react@19.1.0)':
     dependencies:
       '@mastra/core': 0.10.5(openapi-types@12.1.3)(react@19.1.0)(zod@3.25.67)
       '@upstash/redis': 1.35.0
@@ -5658,6 +5671,7 @@ snapshots:
       redis: 4.7.1
       xxhash-wasm: 1.1.0
       zod: 3.25.67
+      zod-to-json-schema: 3.24.5(zod@3.25.67)
     transitivePeerDependencies:
       - pg-native
       - react
@@ -5895,6 +5909,13 @@ snapshots:
       - fastestsmallesttextencoderdecoder
       - typescript
       - utf-8-validate
+
+  '@openrouter/ai-sdk-provider@0.7.2(ai@4.3.16(react@19.1.0)(zod@3.25.67))(zod@3.25.67)':
+    dependencies:
+      '@ai-sdk/provider': 1.1.3
+      '@ai-sdk/provider-utils': 2.2.8(zod@3.25.67)
+      ai: 4.3.16(react@19.1.0)(zod@3.25.67)
+      zod: 3.25.67
 
   '@opentelemetry/api-logs@0.201.1':
     dependencies:
