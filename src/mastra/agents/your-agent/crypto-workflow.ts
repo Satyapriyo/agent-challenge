@@ -32,7 +32,7 @@ interface CoinSearchResult {
 }
 
 const fetchCryptoPrice = createStep({
-  id: 'fetch-crypto-price',
+  id: 'get-crypto-price',
   description: 'Fetches current cryptocurrency price and market data',
   inputSchema: z.object({
     token: z.string().describe('Cryptocurrency name or symbol (e.g., "bitcoin", "BTC", "ethereum", "ETH")'),

@@ -22,9 +22,10 @@ interface CoinSearchResult {
 
 export const cryptoPriceTool = createTool({
 	id: "get-crypto-price",
-	description: "Get current cryptocurrency price and market data",
+	// More detailed description that emphasizes when to use it
+	description: "REQUIRED tool for getting real-time cryptocurrency prices, market data, and trading information. Use this tool for ANY cryptocurrency price query, market cap, volume, or trading data requests. This tool searches and retrieves current data from CoinGecko API.",
 	inputSchema: z.object({
-		token: z.string().describe("Cryptocurrency name or symbol (e.g., 'bitcoin', 'BTC', 'ethereum', 'ETH')"),
+		token: z.string().describe("Cryptocurrency name or symbol. Examples: 'bitcoin', 'BTC', 'ethereum', 'ETH', 'solana', 'SOL', 'dogecoin', 'DOGE'. Case insensitive."),
 	}),
 	outputSchema: z.object({
 		name: z.string(),
@@ -37,15 +38,29 @@ export const cryptoPriceTool = createTool({
 		lastUpdated: z.string(),
 	}),
 	execute: async ({ context }) => {
-		return await getCryptoPrice(context.token);
+		// Add logging to track tool calls
+		console.log(`[CRYPTO TOOL] Called with token: ${context.token}`);
+		
+		try {
+			const result = await getCryptoPrice(context.token);
+			console.log(`[CRYPTO TOOL] Success for ${context.token}:`, result.name);
+			return result;
+		} catch (error) {
+			console.error(`[CRYPTO TOOL] Error for ${context.token}:`, error);
+			throw error;
+		}
 	},
 });
 
 const getCryptoPrice = async (token: string) => {
+	console.log(`[CRYPTO API] Fetching price for: ${token}`);
+	
 	const coinId = await getCoinGeckoId(token);
 	if (!coinId) {
 		throw new Error(`Could not find a CoinGecko coin ID for '${token}'. Please check the name or symbol.`);
 	}
+	
+	console.log(`[CRYPTO API] Found coin ID: ${coinId} for token: ${token}`);
 	
 	// Use the simple price API which is more reliable
 	const url = `https://api.coingecko.com/api/v3/simple/price?ids=${coinId}&vs_currencies=usd&include_24hr_vol=true&include_24hr_change=true&include_market_cap=true&include_last_updated_at=true`;
@@ -98,11 +113,14 @@ const getCoinInfo = async (coinId: string): Promise<{ name: string; symbol: stri
 // Helper to map user input to CoinGecko coin ID using search API
 const getCoinGeckoId = async (token: string): Promise<string | null> => {
 	const searchUrl = `https://api.coingecko.com/api/v3/search?query=${encodeURIComponent(token)}`;
+	console.log(`[CRYPTO API] Searching for: ${token}`);
+	
 	const response = await fetch(searchUrl);
 	if (!response.ok) return null;
 	const searchResult = (await response.json()) as CoinSearchResult;
 	
 	if (!searchResult.coins || searchResult.coins.length === 0) {
+		console.log(`[CRYPTO API] No coins found for: ${token}`);
 		return null;
 	}
 	
@@ -113,6 +131,8 @@ const getCoinGeckoId = async (token: string): Promise<string | null> => {
 		const rankB = b.market_cap_rank || 999999;
 		return rankA - rankB;
 	});
+	
+	console.log(`[CRYPTO API] Found ${sortedCoins.length} coins, using: ${sortedCoins[0].id}`);
 	
 	// Return the coin with the highest market cap rank (lowest number)
 	return sortedCoins[0].id;
