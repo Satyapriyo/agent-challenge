@@ -2,6 +2,10 @@
 
 ![Crypto Agent](./assets/NosanaBuildersChallengeAgents.jpg)
 
+# Deployment
+<img alt="Screenshot 2025-07-07 110335" src="https://github.com/user-attachments/assets/eec0a8a3-b185-46e9-8aca-66f06e6cc9ea" />
+
+
 ## Overview
 
 The **Crypto Price Agent** is an intelligent AI assistant that provides real-time cryptocurrency price data, market analysis, and trading insights. Built using the Mastra framework, this agent leverages the CoinGecko API to deliver accurate, up-to-date information about any cryptocurrency.
